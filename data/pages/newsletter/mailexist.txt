@@ -1,0 +1,16 @@
+====== Newsletter Mail existiert bereits ======
+
+<note important>die angegeben Mail Adresse ist bereits in unserem Verteiler vorhanden</note>
+
+
+Gehen Sie bitte auf die
+[[:newsletter|Newsletter Startseite]] um sich für unseren Newsletter ein- bzw. auszutragen.
+
+\\
+\\
+\\
+
+<WRAP center round box 160px>
+[[:newsletter|Newsletter Startseite]]
+</WRAP>
+ 

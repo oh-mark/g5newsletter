@@ -1,0 +1,97 @@
+===== Complete Installation Guide for the g5newsletter (dokuwiki-syntax) =====
+
+=== Download and install ===
+
+  - download the "Newsletter PHP" from http://www.g5-scripts.de
+  - read the Copyright in the newsletter.txt, if you agree, go on
+  - install it to lib/plugins/g5newsletter/
+  - modify the the newsletter.php and protected/admin.php (see description behind) 
+  - install the g5newsletter-plugin http://www.dokuwiki.org/plugin:g5newsletter or \\ https://nodeload.github.com/oh-mark/g5newsletter/tarball/master
+  - if you want copy the page files to your \data\pages\newsletter \\ these files use the wrap-plugin from http://www.dokuwiki.org/plugin:wrap
+  - if you want to use the \data\pages\newsletter\admin.txt install the iframe-plugin from http://www.dokuwiki.org/plugin:iframe
+
+=== configure now the "Newsletter PHP" ===
+
+  - open the lib/plugins/g5newsletter/protected/admin.php with your Browser and
+  - set the enviroment of your domain and the serverpath
+  - set the path to your newsletter files (stored in protected/variablen.php) \\ If you do not use my default \data\pages\newsletter-Files create you own one!
+  - define your own header and footer
+  - create a default category 'default_newsletter' = "Standard Newsletter"
+  - set a adminuser and a password to protect the configfile of the G5-Newsletter
+    
+==== Syntax and Usage ====
+
+=== simple ===
+
+  {{g5newsletter form}}
+
+=== complex ===
+
+  {{g5newsletter form small subscribe unsubscribe space=5 size=50 category="default_newsletter"}}
+  {{g5newsletter letterarchiv}}
+  {{g5newsletter errormessage}}
+
+=== FLAGS ===
+
+| **FLAGS**               | Description |
+^ form                    | default is form input text length 40 \\ input and text is side by side |
+^ small                   | default is form input text length 15 \\ input and text is one below the other |
+^ subscribe               | only subscribe \\ input and text is side by side |
+^ unsubscribe             | only unsubscribe \\ input and text is side by side |
+^ subscribe unsubscribe   | subscribe and unsubscribe\\ input and text is side by side \\ in combination with **small** it is one below the other |
+^ space=X \\ space="X"    | space in px before subscribe/unsubscribe |
+^ size=X \\ size="X"      | size of the form input text length \\ default is 40 (or 15 with small) |
+^ category="CATEGORYNAME" | default is default_newsletter  \\ need the "" \\ must be the last flag \\ CATEGORYNAME must exist |
+^ archiv/letterarchiv     | display the count of the registerd mails and display the sendet newsletters \\ do not combine with other flags |
+^ errormsg/errormessage   | display errormessages from the G5-Script newsletter.php \\ do not combine with other flags |
+    
+==== Example of kategorien.php ====
+
+<file php kategorien.php>
+<?php
+$cat['default_newsletter'] = "Standard Newsletter";
+?>
+</code>
+
+==== Modifications ==== 
+
+=== admin.php insert behind line 114 ===
+
+<code php>
+<!-- /** added by Mark start **/ -->
+        <tr><td colspan=2>&nbsp;</td></tr>
+        <tr><td colspan=2>Auf diese URL wird der User umgeleitet, wenn sonstige Fehler aufgetreten sind.</td></tr>
+        <tr><td><input type=\"text\" name=\"redirect_fehler\" size=\"40\" value=\"$redirect_fehler\"></td><td><b>URL muss selbst den Fehler auswerten,</b> &uuml;bergeben wird: <b><code>&errormsg=Text</code></b> <br> Die URL sollte ein ? enthalten und wenn nicht, einfach probieren ein ? hinten anzuh&auml;ngen</td></tr>
+<!-- /** added by Mark end **/ -->
+</code>
+
+
+=== newsletter.php modificate line 37-40 === 
+
+<code php>
+/** replaced include with require_once **/
+if(file_exists($script_pfad . "/protected/variablen.php"))    {require_once($script_pfad . "/protected/variablen.php");    }
+if(file_exists($script_pfad . "/protected/kategorien.php"))   {require_once($script_pfad . "/protected/kategorien.php");   }
+if(file_exists($script_pfad . "/protected/data/betreffs.php")){require_once($script_pfad . "/protected/data/betreffs.php");}
+if(file_exists($script_pfad . "/protected/subs.php"))         {require_once($script_pfad . "/protected/subs.php");} 
+</code>
+     
+=== newsletter.php replace function line 350-354 with these ===
+
+<code php>
+function fehler($msg){ /** function mod by Mark **/
+    global $redirect_fehler; 
+        if($redirect_fehler != ''){
+          $redirect_fehler.='&errormsg='.urlencode(html_entity_decode($msg));;
+          header("Location: $redirect_fehler");
+          exit;
+        }else{
+          print $msg;
+          print "<br/>";
+          print wtrmrk();
+          exit;
+        }
+}
+</code>
+
+  
