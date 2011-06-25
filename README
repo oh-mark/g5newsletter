@@ -6,6 +6,10 @@ http://www.dokuwiki.org/plugin:g5newsletter
 If you install this plugin manually, make sure it is installed in
 lib/plugins/g5newsletter/ - if the folder is called different it
 will not work!
+Also you need the "Newsletter PHP" from http://www.g5-scripts.de 
+installed in the same directory.
+Needed modifications of the "Newsletter PHP" are in the installation.txt 
+At the Moment the Script is only in German available.
 
 Please refer to http://www.dokuwiki.org/plugins for additional info
 on how to install plugins in DokuWiki.
