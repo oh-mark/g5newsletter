@@ -10,6 +10,7 @@ Also you need the "Newsletter PHP" from http://www.g5-scripts.de
 installed in the same directory.
 Needed modifications of the "Newsletter PHP" are in the installation.txt 
 At the Moment the Script is only in German available.
+Please read the installation-guide.txt for the complete Installation.
 
 Please refer to http://www.dokuwiki.org/plugins for additional info
 on how to install plugins in DokuWiki.
