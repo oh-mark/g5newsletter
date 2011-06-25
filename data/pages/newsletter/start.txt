@@ -1,9 +1,0 @@
-====== Newsletter ======
-
-<WRAP center round alert 60%>
-Sollten Sie unbeabsicht hierher gelangt sein, gehen Sie bitte auf die \\
-[[:newsletter|Newsletter Startseite]] um sich für unseren Newsletter ein- bzw. auszutragen.
-
-</WRAP>
-
-<wrap center 14em>  [[:newsletter|Newsletter Startseite]]  </wrap> 
