@@ -1,0 +1,16 @@
+~~NOCACHE~~
+====== Newsletter Archiv ======
+
+<WRAP center round info 60%>
+Hier finden Sie unsere bereits versendeten Newsletter\\
+Viel Spaß beim Stöbern :-)
+</WRAP>
+
+Um sich für unseren Newsletter ein- bzw. auszutragen gehen Sie bitte zur [[:newsletter|Newsletter Startseite]] 
+
+----
+
+{{g5newsletter archiv}}
+
+
+

@@ -1,8 +1,6 @@
 <?php
 /**
  * Plugin g5newsletter: to use the Newsletter function with G5-Scripts.de PHP Newsletter Script
- *  
- * i wrote this plug in for DE, my sister in law ;-)  
  * 
  * @license    GPL 2 (http://www.gnu.org/licenses/gpl.html)
  *             and see G5-Scripts.de 
@@ -11,17 +9,11 @@
  * Version 18.06.2011 Mark Wolfgruber
  *   
  * open todo:
- *   - multilingual, using lang vars
+ *   - wenn nur eine Cat (Kategorie) vorhanden ist keine Auswahl anzeigen
+ *   - multilingual
  *   - special functions only viewed for @user or @admin 
  *     like countusers for a category or view the mailadresses of the users  
- *   - if nessesary, i will try to add function for reading 
- *     - categories
- *     - users mail addresses
- *     - add title, first name, family name, mailaddress to an extra file
- *     - write a logfile for subscribe and unsubscripe     
  *     
- *  Help are welcome, plese write a mail to me.
- *      
  */
  
 // must be run within DokuWiki
@@ -43,7 +35,7 @@ class syntax_plugin_g5newsletter extends DokuWiki_Syntax_Plugin {
         return array(
             'author' => 'Mark Wolfgruber',
             'email'  => 'mark@600infos.de',
-            'date'   => '2011-06-22',
+            'date'   => '2011-06-17',
             'name'   => 'G5 Newsletter Plugin',
             'desc'   => 'add a Newsletter function with G5-Scripts.de PHP Newsletter Script',
             'url'    => 'http://www.dokuwiki.org/plugin:tutorial',
@@ -71,18 +63,13 @@ class syntax_plugin_g5newsletter extends DokuWiki_Syntax_Plugin {
         $data = array(
                     'nlfile'    => DOKU_PLUGIN.$this->getPluginName().'/newsletter.php',
                     'protected'    => DOKU_PLUGIN.$this->getPluginName().'/protected',
-//                    'script_url' => 'http://domain.org/htdocs/lib/plugins/g5newsletter',
+//                    'script_url' => 'http://web193.server2.kingstaff-server.org/the-attic_de/htdocs/lib/plugins/g5newsletter',
                     'script_url' => $_PLUGIN_URL,
                     'pluginname' => $this->getPluginName(),
                     'g5newsletter'    => false,
                     'letterarchiv' => false,
                     'admin' => 'off',
                 );
-
-            if(preg_match('/(archiv|letterarchiv)/',$match)){
-                $data['form'] = true;
-                $data['letterarchiv'] = true;
-            }
             if(preg_match('/(small|short)/',$match)){
                 $data['form'] = true;
                 $data['small'] = true;
@@ -121,6 +108,10 @@ class syntax_plugin_g5newsletter extends DokuWiki_Syntax_Plugin {
                 $data['errormsg'] = true;
                 $data['form'] = false;
             }
+            if(preg_match('/(archiv|letterarchiv)/',$match)){
+                $data['letterarchiv'] = true;
+                $data['form'] = false;
+            }
             return $data;
     }
  
@@ -142,6 +133,10 @@ class syntax_plugin_g5newsletter extends DokuWiki_Syntax_Plugin {
               $output= ''; // reset output
               $script_pfad=DOKU_PLUGIN.$this->getPluginName();
               $output.='<span style="font-family:"Courier New, Courier">';    
+//              $output.='<h2>Newsletter An- und Abmelden</h2>';
+//              $output.='<p align="right"><a href="'.$_SERVER['SCRIPT_NAME'].'?id='.$_GET['id'].'"> [ Zur&uuml;ck ] </a><p>';
+//              $output.='<h3 style="font-family: Arial, Helvetica, sans-serif !important;">FORMULARKOPF</h3>';
+//              $output.='###'.$_PLUGIN_URL.'<br>';
               $output.='<form name="letter" method="post" action="'.$_PLUGIN_URL.'/newsletter.php">';
               if($data['small']) {
                   $size=($data['size'])?$data['size']:'15';
@@ -151,13 +146,6 @@ class syntax_plugin_g5newsletter extends DokuWiki_Syntax_Plugin {
                   $output.='E-Mail:&nbsp;';
                   $output.='<input type="text" name="email" size="'.$size.'">&nbsp;';
               }
-              
-              /**
-               *  want do create a selectbox by reading the cat-files 
-               *  if more than one cat is available
-               *  or i can use the admin config menue later               
-               **/
-               
                 /*        echo 'welche News m&ouml;chten Sie erhalten? ';
                               <select name="cat">
                                     <option value="default_newsletter">Standard Newsletter</option>
@@ -170,7 +158,10 @@ class syntax_plugin_g5newsletter extends DokuWiki_Syntax_Plugin {
               }
                          
 
+//              if(!$data['small']) $output.='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
               if($data['space']) $output.='<span style="margin-left:'.$data["space"].'em; ">';
+//              $output.='<p style="margin-left:10em;"></p>';
+//              if(!$data['subscribe'] ) $output.='<br />';
               if($data['subscribe']=='onoff' || !$data['subscribe'] ) {
                   if($data['small']) $output.='<br />';
                   $output.='<input type="radio" name="ac" value="eintragen" checked> Eintragen&nbsp;';                  
@@ -188,10 +179,13 @@ class syntax_plugin_g5newsletter extends DokuWiki_Syntax_Plugin {
                   $output.='<input type="submit" name="btn" value="Austragen">'; 
               } 
 
+
+
               if($data['space']) $output.='</span>';
               $output.='</form>';
               $output.='</span>';
               $renderer->doc .=$output;
+
             
           } elseif($data['letterarchiv']) {
             // global $script_url, $script_pfad, $in;
@@ -203,6 +197,7 @@ class syntax_plugin_g5newsletter extends DokuWiki_Syntax_Plugin {
                 if(file_exists($data['protected'].'/subs.php'))         {require_once($data['protected'].'/subs.php');         } 
               // Letterachiv	
               $output= ''; // reset output
+              // $script_url='http://web193.server2.kingstaff-server.org/the-attic_de/htdocs/lib/plugins/g5newsletter';
               $script_pfad=DOKU_PLUGIN.$this->getPluginName();
               $output.='<span style="font-family: Arial, Helvetica, sans-serif">';
               // show a newsletter specified by the newsletterid
@@ -228,10 +223,10 @@ class syntax_plugin_g5newsletter extends DokuWiki_Syntax_Plugin {
                         Verschickt am: '.date("d.m.Y H:i",$_GET['newsletterid']).'<br/>
                         Betreff: '.$subject.'
                       </h3>
-                      <b>Inhalt:</b><br /> ';
+                      <b>Inhalt:</b><br> ';
                     // display the content of the letter
                     for($row=4;$row<sizeof($letterfile);$row++) {
-                        $output.= ($fileformat == "text") ? (preg_replace("/\r\n|\n\r|\r|\n/s", "<br />", $letterfile[$row])) : $letterfile[$row];
+                        $output.= ($fileformat == "text") ? (preg_replace("/\r\n|\n\r|\r|\n/s", "<br>", $letterfile[$row])) : $letterfile[$row];
                     }
                 } else {
                     // used if the index file is not correct, because the newsletter was deleted manuelly
@@ -244,9 +239,9 @@ class syntax_plugin_g5newsletter extends DokuWiki_Syntax_Plugin {
                         Verschickt am: '.date("d.m.Y H:i",$_GET['newsletterid']).'<br/>
                         Betreff: unbekannt
                       </h3>
-                      <b>Inhalt:</b><br /><br /><br /><hr><br /><br /><center>
+                      <b>Inhalt:</b><br><br><br><hr><br><br><center>
                           NEWSLETTER WURDE BEREITS ENTFERNT
-                      </center><br /><br /><hr><br /><br /> ';                
+                      </center><br><br><hr><br><br> ';                
                 }
               } else {
               // show a overview list of the newsletters
@@ -299,8 +294,8 @@ class syntax_plugin_g5newsletter extends DokuWiki_Syntax_Plugin {
                  require_once($data['nlfile']); // not nice but works 
                 echo '</div>'; 
               } else { 
-                $renderer->doc .= '<hr><b>ERROR, can not load <br />';     
-                $renderer->doc .= $data['nlfile'].'</b><br />'; 
+                $renderer->doc .= '<hr><b>ERROR, can not load <br>';     
+                $renderer->doc .= $data['nlfile'].'</b><br>'; 
                 $renderer->doc .= 'Please install g5-scripts.de newsletter.php</b> first<hr>';        
               } /**/
               //  $renderer->doc .= '<b>ERROR: Newsletter-Plugin need a command!</b>';   

@@ -1,0 +1,16 @@
+====== Newsletter eintragen ======
+
+<WRAP center round info 60%>
+
+Vielen Dank, dass Sie sich bei unserem Newsletter eingetragen haben.
+\\
+\\
+Sie erhalten in Kürze eine Mail mit einer Bestätigung, dass 
+Ihre Anmeldung in unserem Newsletter System erfolgreich war.
+
+</WRAP>
+
+Sollten Sie nicht über einen Link aus einer Mail hierhergelangt sein, gehen Sie bitte auf die \\
+[[:newsletter|Newsletter Startseite]] um sich für unseren Newsletter ein- bzw. auszutragen.
+
+<wrap center 14em>  [[:newsletter|Newsletter Startseite]]  </wrap> 
